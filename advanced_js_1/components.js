@@ -1,42 +1,38 @@
-const restaurantRow = (restaurant) =>{ 
+const restaurantRow = (restaurant) => {
+  const {name, address} = restaurant;
 
-const {name, company} = restaurant;
-
-const tr= document.createElement('tr');
-tr.innerHTML = `
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
   <td>${name}</td>
-  <td>${company}</td>
+  <td>${address}</td>
 `;
-return tr;}
+  return tr;
+};
 
+const restaurantModal = (restaurant, menu) => {
+  const {name, address, postalCode, city, phone, company} = restaurant;
 
-const restaurantModal = (restaurant, menu) =>
- {
- const {name, address, postalCode, city, phone, company} = restaurant;
+  const {courses} = menu;
 
- const{courses} = menu; 
+  let menuHtml = '';
 
- let menuHtml=''
+  for (let course of courses) {
+    const diets = Array.isArray(course.diets)
+      ? course.diets
+      : course.diets.split(',').map((diet) => diet.trim());
+    const filteredDiets = diets.filter((diet) => diet !== '*');
+    const dietIcons = filteredDiets.map((diet) => {
+      switch (diet) {
+        case 'G':
+          return '🌾&#xfeff;🚫';
+        case 'L':
+          return '🥛&#xfeff;🚫';
+        default:
+          return diet;
+      }
+    });
 
- 
-      for (let course of courses) {
-        const diets = Array.isArray(course.diets)
-          ? course.diets
-          : course.diets.split(',').map((diet) => diet.trim());
-        const filteredDiets = diets.filter((diet) => diet !== '*');
-        const dietIcons = filteredDiets.map((diet) => {
-          switch (diet) {
-            case 'G':
-              return '🌾&#xfeff;🚫';
-            case 'L':
-              return '🥛&#xfeff;🚫';
-            default:
-              return diet;
-          }
-        });
-
-
- menuHtml +=  `
+    menuHtml += `
         <tr>
           <td>${course.name}</td>
           <td>${course.price || 'Not provided'}</td>
@@ -44,8 +40,8 @@ const restaurantModal = (restaurant, menu) =>
         
         </tr>
       `;
-      }
-let modalhtml =   `
+  }
+  let modalhtml = `
  Name: ${name}<br>
   Address: ${address}<br>
   Phone: ${phone}<br>
@@ -57,9 +53,8 @@ let modalhtml =   `
     ${menuHtml}
   </table>
 
-      `
-      return modalhtml;
+      `;
+  return modalhtml;
 };
 
-
-export {restaurantRow , restaurantModal} ;
+export {restaurantRow, restaurantModal};

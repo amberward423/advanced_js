@@ -8,6 +8,7 @@ async function fetchData(baseUrl, options) {
     return jsonData;
   } catch (error) {
     console.log(error.message);
+    throw error;
   } finally {
     // finally = this is executed anyway, whether the execution was successful or not
     console.log('asynchronous load complete');

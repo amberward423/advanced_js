@@ -1,11 +1,12 @@
-import { restaurantRow , restaurantModal} from './components.js'; 
+import {restaurantRow, restaurantModal} from './components.js';
 
-import { fetchData } from './utils.js';
+import {fetchData} from './utils.js';
 
+import {baseUrl} from './variables.js';
 // your code here
 
 try {
-  const restaurants = await fetchData(url);
+  const restaurants = await fetchData(baseUrl);
   console.log(restaurants);
 
   const table = document.querySelector('table');
@@ -14,12 +15,11 @@ try {
   console.log('table', table);
 
   for (const restaurant of restaurants) {
-   
     const row = restaurantRow(restaurant);
-        table.appendChild(row);
- row.addEventListener('click', async () => {
+    table.appendChild(row);
+    row.addEventListener('click', async () => {
       const url = `https://media2.edu.metropolia.fi/restaurant/api/v1/restaurants/daily/${restaurant._id}/en`;
-            
+
       const data = await fetchData(url);
 
       console.log(data);
@@ -27,10 +27,9 @@ try {
         .querySelectorAll('.highlight')
         .forEach((element) => element.classList.remove('highlight'));
 
-     row.classList.add('highlight');
-    row.classList.add('highlight');
+      row.classList.add('highlight');
       const dialog = document.querySelector('dialog');
- dialog.innerHTML = modalHtml; 
+      dialog.innerHTML = restaurantModal(restaurant, data);
       dialog.show();
     });
   }
