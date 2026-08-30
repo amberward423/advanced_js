@@ -21,6 +21,7 @@ const restaurants = await fetchData(baseUrl);
  row.addEventListener('click', async () => {
       const url = `${baseUrl}/daily/${restaurant._id}/en`; 
       const data = await fetchData(url);
+      const modalHtml = restaurantModal(restaurant, data);
 
       console.log(data);
       document
@@ -48,6 +49,6 @@ table.querySelectorAll('tr:not(:first-child)').forEach((row) => {
 
 
 } catch (error) {
-  alert('An error occurred:', error);
+  alert('An error occurred while loading the restaurant data. Please try again.', error);
   console.error('An error occurred:', error);
 }
